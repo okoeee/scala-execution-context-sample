@@ -20,6 +20,60 @@ object ExecutorSample {
   val myExecutionContext: ExecutionContextExecutor =
     ExecutionContext.fromExecutor(myExecutors)
 
+  def conflictExec(): Unit = {
+    var i = 0
+    val thread1 = new Thread(() => {
+      (1 to 100).foreach { _ =>
+        i.synchronized { i += 1 }
+      }
+    })
+    val thread2 = new Thread(() => {
+      (1 to 100).foreach { _ =>
+        i.synchronized { i += 1 }
+      }
+    })
+    thread1.start()
+    thread2.start()
+    thread1.join()
+    thread2.join()
+    println(i)
+    // 結果: 200
+  }
+
+  def deadlockExec(): Unit = {
+    val i = "hoge"
+    val j = "fuga"
+
+    val thread1 = new Thread(() => {
+      println("thread1 start")
+      i.synchronized { // iのロックを取得
+        Thread.sleep(1000)
+        j.synchronized {
+          println("thread1 j synchronized")
+        }
+      }
+    })
+    val thread2 = new Thread(() => {
+      println("thread2 start")
+      j.synchronized { // jのロックを取得
+        Thread.sleep(1000)
+        i.synchronized {
+          println("thread1 i synchronized")
+        }
+      }
+    })
+
+    thread1.start()
+    thread2.start()
+    thread1.join()
+    thread2.join()
+
+    // 結果
+    // thread1 start
+    // thread2 start
+    // ここで終わり
+  }
+
   def newLine: Unit = println("""
       |==============================================================
       |
