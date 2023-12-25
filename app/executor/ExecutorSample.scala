@@ -2,6 +2,7 @@ package executor
 
 import akka.actor.ActorSystem
 
+import java.time.LocalDateTime
 import java.util.concurrent.{ExecutorService, Executors}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{
@@ -72,6 +73,27 @@ object ExecutorSample {
     // thread1 start
     // thread2 start
     // ここで終わり
+  }
+
+  private def printThreadNameWith(msg: String): Unit = {
+    val now = LocalDateTime.now()
+    val threadName = Thread.currentThread().getName
+    println(s"$now - [$threadName] - $msg")
+  }
+
+  private def execFutureTask(
+    msg: String
+  )(ex: ExecutionContext): Future[Unit] = {
+    Future {
+      printThreadNameWith(s"$msg task executed")
+    }(ex)
+  }
+
+  def futureSample1(): Unit = {
+    import scala.concurrent.ExecutionContext.Implicits.{global => ex}
+    printThreadNameWith("Method start")
+    execFutureTask("Future1")(ex)
+    execFutureTask("Future2")(ex)
   }
 
   def newLine: Unit = println("""
