@@ -10,7 +10,7 @@ class HomeController @Inject() (cc: ControllerComponents)
 
   def index(): Action[AnyContent] = Action { implicit req =>
     ExecutorSample.newLine
-    ExecutorSample.futureSample1()
+    ExecutorSample.sample4
     // ExecutorSample.newLine
     Ok(views.html.index())
   }

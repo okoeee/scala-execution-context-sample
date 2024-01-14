@@ -8,7 +8,8 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       guice,
       "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test,
-      "com.typesafe.akka" %% "akka-actor-typed" % "2.6.21"
+      "com.typesafe.akka" %% "akka-actor-typed" % "2.6.21",
+      "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
     ),
     scalacOptions ++= Seq(
       "-feature",

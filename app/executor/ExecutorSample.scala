@@ -4,6 +4,7 @@ import akka.actor.ActorSystem
 
 import java.time.LocalDateTime
 import java.util.concurrent.{ExecutorService, Executors}
+import scala.collection.parallel.CollectionConverters.ImmutableIterableIsParallelizable
 import scala.concurrent.duration.Duration
 import scala.concurrent.{
   Await,
@@ -142,6 +143,27 @@ object ExecutorSample {
         println(s"Other Thread: ${Thread.currentThread().getName}")
       }
     }).start()
+  }
+
+  def sample4 = {
+
+    val numSeq =
+      Seq(1, 2, 3, 4, 5)
+    val numParSeq = (numSeq).par
+    val resultParSeq = numParSeq.map { i =>
+      println(s"Thread: ${Thread.currentThread().getName}")
+      i * 2
+    }
+    val result = resultParSeq.seq
+    println(result)
+
+    numParSeq.foreach(println(_))
+
+    val nn = Seq(20, 10, 5, 2, 1)
+    val rr = nn.reduce(_ - _)
+    val rr1 = nn.par.reduce(_ - _)
+    println(rr, rr1)
+
   }
 
 }
