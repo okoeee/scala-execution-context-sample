@@ -166,4 +166,27 @@ object ExecutorSample {
 
   }
 
+  /** Futureの例外補足
+    */
+  def sample5 = {
+    import scala.concurrent.ExecutionContext.Implicits.global
+    Future {
+      1 / 0
+    }.recover { case _: ArithmeticException =>
+      println("ArithmeticException")
+    }
+  }
+
+  /** よくあるミス
+   * Futureが
+    */
+  def sample6 = {
+    import scala.concurrent.ExecutionContext.Implicits.global
+    try {
+      Future { 1 / 0 }
+    } catch {
+      case _: ArithmeticException => println("ArithmeticException")
+    }
+  }
+
 }

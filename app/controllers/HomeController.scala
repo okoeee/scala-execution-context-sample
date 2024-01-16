@@ -10,8 +10,9 @@ class HomeController @Inject() (cc: ControllerComponents)
 
   def index(): Action[AnyContent] = Action { implicit req =>
     ExecutorSample.newLine
-    ExecutorSample.sample4
+    ExecutorSample.sample5
     // ExecutorSample.newLine
+    println("Hello world")
     Ok(views.html.index())
   }
 
