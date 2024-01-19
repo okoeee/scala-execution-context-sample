@@ -189,4 +189,10 @@ object ExecutorSample {
     }
   }
 
+  val myExecutorService = Executors.newFixedThreadPool(3)
+  ExecutionContext.fromExecutorService(myExecutorService)
+
+  val myExecutor = Executors.newFixedThreadPool(3)
+  ExecutionContext.fromExecutor(myExecutor)
+
 }
